@@ -1,25 +1,21 @@
 
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
-from ml_model import predict_price
 
-app = FastAPI()
+from database import engine
+from models import Base
+from routers import housing
 
-#schema validador
-class Housing(BaseModel):
-    rooms: int
-    
+app = FastAPI(
+    title="Housing API con FastAPI",
+    description="API para predicción de precios de viviendas usando Machine Learning, FastAPI y SQLAlchemy",
+    version="1.0.0"
+)
+
+app.include_router(housing.router)
+
 @app.get("/")
-def home():
-    return {"message":"Housing API"}
-
-@app.post("/housing_price")
-def housing_price(housing: Housing):
-    rooms = housing.rooms
-    price = predict_price(rooms)
-    
-    return{
-        "rooms": rooms,
-        "price": price
+def index():
+    return {
+        "title": "FASTAPI HOUSING API VERSION 1.0",
+        "message": "Bienvenido a mi API"
     }
-    
