@@ -7,7 +7,8 @@ from ml_model import predict_price
 
 from schemas import (
     HousingCreate,
-    HousingPredictionResponse
+    HousingPredictionResponse,
+    HousingResponse
 )
 
 router = APIRouter(
@@ -31,3 +32,22 @@ def housing_price(data: HousingCreate):
         "habitaciones": data.rooms,
         "precio": price
     }
+    
+@router.post("/",response_model=HousingResponse)
+def housing_price(data: HousingCreate,db: Session = Depends(get_db)):
+    price = predict_price(data.rooms)
+
+    new_housing = Housing(
+        rooms = data.rooms,
+        price = price
+    )
+    
+    db.add(new_housing)
+    db.commit()
+    db.refresh(new_housing)
+
+    return new_housing
+
+@router.get("/",response_model=list[HousingResponse])
+def get_housing(db: Session = Depends(get_db)):
+    return db.query(Housing).all()

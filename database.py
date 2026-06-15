@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 DATABASE_URL = (
-    "mysql+mysqldb://root:root2025@localhost/db_housing_api"
+    "mysql+mysqldb://root:mysql2026$@localhost/db_housing_api"
 )
 
 engine = create_engine(

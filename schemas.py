@@ -7,3 +7,8 @@ class HousingPredictionResponse(BaseModel):
     message: str
     habitaciones: int
     precio: float
+
+class HousingResponse(BaseModel):
+    id: int
+    rooms: int
+    price: float
